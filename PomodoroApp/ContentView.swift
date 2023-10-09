@@ -17,13 +17,17 @@ struct ContentView: View {
     @State private var isActive = false
     @State private var counter = 0
     @State private var timeRemaining: CGFloat = oneCycle[0]
+    
+    
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
+    @State private var showingOptions = false
     
     var body: some View {
         NavigationView {
         let interval = Int(timeRemaining)
         let formattedString = DateComponentsFormatter().string(from: TimeInterval(interval))!
-        
+            
         VStack {
             VStack {
                 Text("\(formattedString)")
@@ -57,7 +61,7 @@ struct ContentView: View {
             if timeRemaining > 0 {
                 timeRemaining -= 1
             } else {
-                //isActive = false
+                isActive = false
                 if counter % 2 == 0 {
                     timeRemaining = oneCycle[1]
                     counter += 1
@@ -70,10 +74,14 @@ struct ContentView: View {
         .navigationTitle("Pomodoro App")
         .toolbar {
             Button {
+                showingOptions = true
                 
             } label: {
                 Text("Settings")
             }
+        }
+        .sheet(isPresented: $showingOptions) {
+            OptionView()
         }
     }
     }
