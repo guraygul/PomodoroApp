@@ -7,31 +7,36 @@
 
 import SwiftUI
 
+import SwiftUI
+
 struct OptionView: View {
-    @State private var selectedTime = 25
+    @Binding var timeRemaining: CGFloat // Ana ekrandaki zamanlayıcıyı değiştirmek için kullanacağımız bağlı değişken
     
     var body: some View {
-        NavigationStack{
+        NavigationView {
             Form {
-                Section {
-                    Picker("Pomodoro Time", selection: $selectedTime) {
-                        ForEach( 0..<61 ) {
-                        Text("\($0) minutes")
-                        }
+                Section(header: Text("Zamanlayıcı Ayarları")) {
+                    Stepper(value: $timeRemaining, in: 1...200000, step: 60) {
+                        Text("Süre: \(Int(timeRemaining) / 60) dakika")
                     }
                 }
-                Text("bbb")
             }
-            Section {
-                Text("Confirm")
+            .navigationTitle("Ayarlar")
+            .toolbar {
+                Button("Kaydet") {
+                    // Ayarları kaydetmek için bir şeyler yapabilirsiniz (örneğin, UserDefaults kullanarak)
+                    // Ayrıca, kullanıcının seçtiği süreyi kaydetmelisiniz.
+                    UserDefaults.standard.set(Int(timeRemaining), forKey: "selectedTime")
+                        
+                        // OptionView'i kapatın
+                   // presentationMode.wrappedValue.dismiss()
+                }
             }
         }
-        .navigationTitle("Options")
     }
-
-    
 }
 
-#Preview {
-    OptionView()
-}
+
+//#Preview {
+//    OptionView()
+//}

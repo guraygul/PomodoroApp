@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-let defaultTimeRemaining: CGFloat = 10
+let defaultTimeRemaining: CGFloat = 60
 let breakTime: CGFloat = 5
 let oneCycle: Array = [defaultTimeRemaining, breakTime]
 //let lineWith: CGFloat = 30
@@ -17,17 +17,15 @@ struct ContentView: View {
     @State private var isActive = false
     @State private var counter = 0
     @State private var timeRemaining: CGFloat = oneCycle[0]
-    
-    
+    @State private var selectedTime = 0
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     @State private var showingOptions = false
     
     var body: some View {
-        NavigationView {
-        let interval = Int(timeRemaining)
+        let interval = timeRemaining
         let formattedString = DateComponentsFormatter().string(from: TimeInterval(interval))!
-            
+        NavigationView {
         VStack {
             VStack {
                 Text("\(formattedString)")
@@ -81,17 +79,19 @@ struct ContentView: View {
             }
         }
         .sheet(isPresented: $showingOptions) {
-            OptionView()
+            OptionView(timeRemaining: $timeRemaining)
+                .onAppear() {
+                    // Uygulama başlatıldığında kaydedilen süreyi yükleme
+                    if let savedTime = UserDefaults.standard.value(forKey: "selectedTime") as? Double {
+                        timeRemaining = CGFloat(savedTime)
+                    }
+
+                }
         }
     }
     }
     func changeBackColor(isActive: Bool) -> Color {
-        if isActive == true {
-            return Color.blue
-        }
-        else {
-            return Color.red
-        }
+        isActive ? Color.blue : Color.red
     }
 }
 #Preview {

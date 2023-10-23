@@ -12,7 +12,6 @@
 		1069D13A2AD16B1A004C9565 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1069D1392AD16B1A004C9565 /* Assets.xcassets */; };
 		1069D13D2AD16B1A004C9565 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1069D13C2AD16B1A004C9565 /* Preview Assets.xcassets */; };
 		107068DF2AD3342700501B62 /* OptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107068DE2AD3342700501B62 /* OptionView.swift */; };
-		107D617B2AD33D74003FBB50 /* OptionProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107D617A2AD33D74003FBB50 /* OptionProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,7 +21,6 @@
 		1069D1392AD16B1A004C9565 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1069D13C2AD16B1A004C9565 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		107068DE2AD3342700501B62 /* OptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionView.swift; sourceTree = "<group>"; };
-		107D617A2AD33D74003FBB50 /* OptionProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionProperties.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,7 +56,6 @@
 				1069D1352AD16B19004C9565 /* PomodoroAppApp.swift */,
 				1069D1372AD16B19004C9565 /* ContentView.swift */,
 				107068DE2AD3342700501B62 /* OptionView.swift */,
-				107D617A2AD33D74003FBB50 /* OptionProperties.swift */,
 				1069D1392AD16B1A004C9565 /* Assets.xcassets */,
 				1069D13B2AD16B1A004C9565 /* Preview Content */,
 			);
@@ -146,7 +143,6 @@
 				1069D1382AD16B19004C9565 /* ContentView.swift in Sources */,
 				107068DF2AD3342700501B62 /* OptionView.swift in Sources */,
 				1069D1362AD16B19004C9565 /* PomodoroAppApp.swift in Sources */,
-				107D617B2AD33D74003FBB50 /* OptionProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
