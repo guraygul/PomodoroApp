@@ -7,91 +7,87 @@
 
 import SwiftUI
 
-let defaultTimeRemaining: CGFloat = 60
-let breakTime: CGFloat = 5
-let oneCycle: Array = [defaultTimeRemaining, breakTime]
-//let lineWith: CGFloat = 30
-//let radius: CGFloat = 70
 
 struct ContentView: View {
-    @State private var isActive = false
-    @State private var counter = 0
-    @State private var timeRemaining: CGFloat = oneCycle[0]
-    @State private var selectedTime = 0
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    
     @State private var showingOptions = false
     
+    @StateObject private var vm = ViewModel()
+    private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    private let width: Double = 250
+    private var isActive = false
     var body: some View {
-        let interval = timeRemaining
-        let formattedString = DateComponentsFormatter().string(from: TimeInterval(interval))!
         NavigationView {
-        VStack {
             VStack {
-                Text("\(formattedString)")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(width: 300, height: 300)
-                    .background(changeBackColor(isActive: self.isActive))
-                    .cornerRadius(100)
-                    .font(.largeTitle)
-                    .shadow(radius: 5)
-                    .padding(100)
-            }
-            VStack {
-                Label("\(isActive ? "Pause" : "Start")", systemImage: "\(isActive ? "pause.fill" : "play.fill")")
-                    .foregroundColor(isActive ? .red : .white)
-                    .font(.title)
-                    .onTapGesture(perform: {
-                        isActive.toggle()
-                    })
-            }
-            .frame(width: 300, height: 100)
-            .background(.green)
-            .cornerRadius(100)
-            .padding(.vertical)
-            .shadow(radius: 5)
-            
-        } .onReceive(timer, perform: { _ in
-            guard isActive else { return }
-            if timeRemaining > 0 {
-                timeRemaining -= 1
-            } else {
-                isActive = false
-                if counter % 2 == 0 {
-                    timeRemaining = oneCycle[1]
-                    counter += 1
-                } else {
-                    timeRemaining = oneCycle[0]
-                    counter += 1
+                VStack {
+                    Text("\(vm.time)")
+                        .font(.system(size: 70, weight: .bold, design: .rounded))
+                        .foregroundColor(.black)
+                        .padding()
+                        .frame(width: 300, height: 300)
+                        .cornerRadius(100)
+                        .shadow(radius: 5)
+                        .background(.thinMaterial)
+                        .cornerRadius(20)
+                        .overlay(RoundedRectangle(cornerRadius: 20)
+                            .stroke(Color.gray, lineWidth: 4))
+                        .padding(50)
+                        .alert("Timer done!", isPresented: $vm.showingAlert) {
+                            Button("Continue", role: .cancel) {
+                                // add codes
+                            }
+                        }
+                    
+                   
                 }
-            }
-        })
-        .navigationTitle("Pomodoro App")
-        .toolbar {
-            Button {
-                showingOptions = true
-                
-            } label: {
-                Text("Settings")
-            }
-        }
-        .sheet(isPresented: $showingOptions) {
-            OptionView(timeRemaining: $timeRemaining)
-                .onAppear() {
-                    // Uygulama başlatıldığında kaydedilen süreyi yükleme
-                    if let savedTime = UserDefaults.standard.value(forKey: "selectedTime") as? Double {
-                        timeRemaining = CGFloat(savedTime)
+                VStack {
+                    
+                    VStack {
+                        Button("Start"){
+                            vm.start(minutes: vm.minutes)
+                                //timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+                        }
+                        .disabled(vm.isActive)
+                        .foregroundColor(isActive ? .orange : .white)
+                        .font(.title)
                     }
-
+                    .frame(width: 300, height: 100)
+                    .background(.green)
+                    .cornerRadius(100)
+                    .padding(.vertical)
+                    .shadow(radius: 5)
+                    
+                    
+                    VStack {
+                        Button("Reset", action: vm.reset)
+                        .foregroundColor(.white)
+                        .font(.title)
+                    }
+                    .frame(width: 300, height: 100)
+                    .background(.red)
+                    .cornerRadius(100)
+                    .padding(.vertical)
+                    .shadow(radius: 5)
                 }
+                
+            }
+            .onReceive(timer) { _ in
+                vm.updateCountdown()
+            }
+            .padding(.bottom)
+            .navigationTitle("Pomodoro App")
+            .toolbar {
+                Button {
+                    showingOptions = true
+                    
+                } label: {
+                    Text("Settings")
+                }
+            }
+            .sheet(isPresented: $showingOptions) {
+                OptionView(vm: vm)
+                
+            }
         }
-    }
-    }
-    func changeBackColor(isActive: Bool) -> Color {
-        isActive ? Color.blue : Color.red
     }
 }
 #Preview {
